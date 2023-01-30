@@ -175,7 +175,7 @@ app.post("/booking", (req, res) => {
     // "from backend",
     // "from backend",
   ];
-
+  console.log(req.body);
   db.query(q, [values], (err, data) => {
     if (err) return res.send(err);
     return res.json("working post method");

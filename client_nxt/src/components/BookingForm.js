@@ -16,6 +16,7 @@ import dynamic from "next/dynamic";
 //const { useForm, Controller } = dynamic(() => import("react-hook-form"));
 import { useForm, Controller } from "react-hook-form";
 import { InputLabel, Select, MenuItem } from "@mui/material";
+import { DateRangePicker, DateRange } from "mui-daterange-picker";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -25,33 +26,39 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 900,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
 
-export default function GuestForm({ open, onClose, initialValues }) {
+export default function BookingForm({ open, onClose, initialValues }) {
   function handleClose() {
     onClose();
   }
-  const [guest, setGuest] = useState(initialValues);
+  const [booking, setBooking] = useState(initialValues);
   const [error, setError] = useState(false);
-
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
   const handleChange = (e) => {
-    setGuest((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setBooking((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleClick = async (e) => {
     e.preventDefault();
     try {
+      console.log(dateRange);
       validationSchema
-        .validate(guest)
+        .validate(booking)
         .then(async () => {
+          const withDate = {
+            ...booking,
+            Date_from: dateRange.startDate,
+            Date_to: dateRange.endDate,
+          };
           const response = await axios.post(
-            "http://localhost:8800/guest",
-            guest
+            "http://localhost:8800/booking",
+            withDate
           );
 
           if (response.data.err) {
@@ -75,12 +82,12 @@ export default function GuestForm({ open, onClose, initialValues }) {
       .required()
       .min(4, "Must be exactly 4 digits")
       .max(4, "Must be exactly 4 digits"),
-    gname: Yup.string().required(),
-    Phone: Yup.string()
+    Hno: Yup.string()
       .required()
-      .min(10, "Must be exactly 10 digits")
-      .max(10, "Must be exactly 10 digits"),
-    Address: Yup.string().required(),
+      .min(4, "Must be exactly 4 digits")
+      .max(4, "Must be exactly 4 digits"),
+    // Date_from: Yup.string().required(),
+    // Date_to: Yup.string().required(),
   });
 
   const {
@@ -91,6 +98,8 @@ export default function GuestForm({ open, onClose, initialValues }) {
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
+  const toggle = () => setDatePickerOpen(!datePickerOpen);
+  const [dateRange, setDateRange] = useState();
 
   return (
     <div>
@@ -116,7 +125,7 @@ export default function GuestForm({ open, onClose, initialValues }) {
                     fullWidth
                     // {...register('hotelno')}
                     // error={errors.hotelno ? true : false}
-
+                    sx={{ zIndex: 5000 }}
                     onChange={handleChange}
                     name="Gno"
                   />
@@ -128,21 +137,35 @@ export default function GuestForm({ open, onClose, initialValues }) {
                     variant="standard"
                     fullWidth
                     // {...register('hotelname')}
-
+                    sx={{ zIndex: 5000 }}
                     onChange={handleChange}
                     name="Hno"
                   />
-                  <TextField
+                  {/* <TextField
                     id="standard-basic"
-                    label="Address"
-                    placeholder="Enter Address"
+                    label="From Date"
+                    placeholder="From Date"
                     variant="standard"
                     fullWidth
                     // {...register('city')}
                     onChange={handleChange}
-                    name="Address"
+                    name="Date_from"
                   />
-
+                  <TextField
+                    id="standard-basic"
+                    label="To Date"
+                    placeholder="To Date"
+                    variant="standard"
+                    fullWidth
+                    // {...register('city')}
+                    onChange={handleChange}
+                    name="Date_to"
+                  /> */}
+                  <DateRangePicker
+                    open={true}
+                    toggle={toggle}
+                    onChange={(range) => setDateRange(range)}
+                  />
                   <br />
                   <br />
                   <Button variant="contained" onClick={handleClick} fullWidth>
