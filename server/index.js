@@ -7,8 +7,8 @@ const app = express();
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
-  database: "hotel_management",
+  password: "password",
+  database: "ass5",
 });
 // db.connect(() => {
 //   console.log("Connected to db");
@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/hotel", (req, res) => {
-  const q = "SELECT * FROM hotel_management.hotel";
+  const q = "SELECT * FROM ass5.hotel";
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -30,7 +30,7 @@ app.get("/hotel", (req, res) => {
 
 app.post("/hotel", (req, res) => {
   const q =
-    "INSERT INTO hotel_management.hotel(`Hno`, `Hname`, `city`, `Phone`, `Room_type`, `Price`) VALUES (?)";
+    "INSERT INTO ass5.hotel(`Hno`, `Hname`, `city`, `Phone`, `Room_type`, `Price`) VALUES (?)";
 
   const values = [
     req.body.Hno,
@@ -61,7 +61,7 @@ app.post("/hotel", (req, res) => {
 
 app.delete("/hotel/:Hno", (req, res) => {
   const Hotelno = req.params.Hno;
-  const q = " DELETE FROM hotel_management.hotel WHERE Hno = ? ";
+  const q = " DELETE FROM ass5.hotel WHERE Hno = ? ";
 
   db.query(q, [Hotelno], (err, data) => {
     if (err) {
@@ -75,7 +75,7 @@ app.delete("/hotel/:Hno", (req, res) => {
 app.put("/hotel/:Hno", (req, res) => {
   const Hno = req.params.Hno;
   const q =
-    "UPDATE hotel_management.hotel SET `Hno`= ?, `Hname`= ?, `city`= ?, `Phone`= ?, `Room_Type`= ?, `Price`= ? WHERE Hno = ?";
+    "UPDATE ass5.hotel SET `Hno`= ?, `Hname`= ?, `city`= ?, `Phone`= ?, `Room_Type`= ?, `Price`= ? WHERE Hno = ?";
 
   const values = [
     req.body.Hno,
@@ -93,7 +93,7 @@ app.put("/hotel/:Hno", (req, res) => {
 });
 
 app.get("/guest", (req, res) => {
-  const q = "SELECT * FROM hotel_management.guest";
+  const q = "SELECT * FROM ass5.guest";
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -102,7 +102,7 @@ app.get("/guest", (req, res) => {
 
 app.post("/guest", (req, res) => {
   const q =
-    "INSERT INTO hotel_management.guest(`Gno`, `gname`, `Address`, `Phone`) VALUES (?)";
+    "INSERT INTO ass5.guest(`Gno`, `gname`, `Address`, `Phone`) VALUES (?)";
 
   const values = [
     req.body.Gno,
@@ -125,7 +125,7 @@ app.post("/guest", (req, res) => {
 
 app.delete("/guest/:Gno", (req, res) => {
   const Guestno = req.params.Gno;
-  const q = " DELETE FROM hotel_management.guest WHERE Gno = ? ";
+  const q = " DELETE FROM ass5.guest WHERE Gno = ? ";
 
   db.query(q, [Guestno], (err, data) => {
     if (err) return res.send(err);
@@ -136,7 +136,7 @@ app.delete("/guest/:Gno", (req, res) => {
 app.put("/guest/:Gno", (req, res) => {
   const Gno = req.params.Gno;
   const q =
-    "UPDATE hotel_management.guest SET `Gno`= ?, `Gname`= ?, `address`= ?, `Phone`= ? WHERE Gno = ?";
+    "UPDATE ass5.guest SET `Gno`= ?, `Gname`= ?, `address`= ?, `Phone`= ? WHERE Gno = ?";
 
   const values = [
     req.body.Gno,
@@ -152,7 +152,7 @@ app.put("/guest/:Gno", (req, res) => {
 });
 
 app.get("/booking", (req, res) => {
-  const q = "SELECT * FROM hotel_management.booking";
+  const q = "SELECT * FROM ass5.booking";
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -161,7 +161,7 @@ app.get("/booking", (req, res) => {
 
 app.post("/booking", (req, res) => {
   const q =
-    "INSERT INTO hotel_management.booking(`Gno`, `Hno`, `Date_from`, `Date_to`) VALUES (?)";
+    "INSERT INTO ass5.booking(`Gno`, `Hno`, `Date_from`, `Date_to`) VALUES (?)";
 
   const values = [
     req.body.Gno,
@@ -184,7 +184,7 @@ app.post("/booking", (req, res) => {
 
 app.delete("/booking/:Gno", (req, res) => {
   const Guestno = req.params.Gno;
-  const q = " DELETE FROM hotel_management.booking WHERE Gno = ? ";
+  const q = " DELETE FROM ass5.booking WHERE Gno = ? ";
 
   db.query(q, [Guestno], (err, data) => {
     if (err) return res.send(err);
@@ -195,7 +195,7 @@ app.delete("/booking/:Gno", (req, res) => {
 app.put("/booking/:Gno", (req, res) => {
   const Gno = req.params.Gno;
   const q =
-    "UPDATE hotel_management.booking SET `Gno`= ?, `Hno`= ?, `Date_from`= ?, `Date_to`= ? WHERE Gno = ?";
+    "UPDATE ass5.booking SET `Gno`= ?, `Hno`= ?, `Date_from`= ?, `Date_to`= ? WHERE Gno = ?";
 
   const values = [
     req.body.Gno,
